@@ -35,16 +35,16 @@ resource "aws_s3_bucket_public_access_block" "static_site" {
 }
 
 # Upload initial static site assets, to be replaced by CI/CD
-locals {
-  static_files = fileset("${path.module}/source", "**")
-}
+# locals {
+#   static_files = fileset("${path.module}/source", "**")
+# }
 
-resource "aws_s3_object" "static_assets" {
-  for_each = { for file in local.static_files : file => file }
+# resource "aws_s3_object" "static_assets" {
+#   for_each = { for file in local.static_files : file => file }
 
-  bucket       = aws_s3_bucket.static_site.id
-  key          = each.key
-  source       = "${path.module}/source/${each.value}"
-  etag         = filemd5("${path.module}/source/${each.value}")
-  content_type = lookup(var.mime_types, regex("[^.]+$", each.key), null)
-}
+#   bucket       = aws_s3_bucket.static_site.id
+#   key          = each.key
+#   source       = "${path.module}/source/${each.value}"
+#   etag         = filemd5("${path.module}/source/${each.value}")
+#   content_type = lookup(var.mime_types, regex("[^.]+$", each.key), null)
+# }
